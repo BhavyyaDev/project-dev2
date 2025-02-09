@@ -11,7 +11,7 @@ if (!storage.get('portfolio')) {
     storage.set('portfolio', []);
 }
 
-const API_KEY = 'success - redundant origins.';
+const API_KEY = 'demo';
 const BASE_URL = 'https://www.alphavantage.co/query';
 
 let portfolioChart = null;
