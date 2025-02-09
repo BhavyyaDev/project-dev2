@@ -11,8 +11,8 @@ if (!storage.get('portfolio')) {
     storage.set('portfolio', []);
 }
 
-const API_KEY = 'demo';
-const BASE_URL = 'https://www.alphavantage.co/query';
+const API_KEY = 'cukf879r01qo08i85ndgcukf879r01qo08i85ne0';
+const BASE_URL = 'https://finnhub.io/api/v1';
 
 let portfolioChart = null;
 
@@ -52,11 +52,18 @@ function initializeChart() {
 async function fetchStockData(symbol) {
     try {
         const response = await fetch(
-            `${BASE_URL}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${API_KEY}`
+            `${BASE_URL}/quote?symbol=${symbol}&token=${API_KEY}`
         );
         const data = await response.json();
-        return data['Global Quote'];
+
+        if (data.error) {
+            showNotification('Error', `Invalid symbol: ${symbol}`);
+            return null;
+        }
+
+        return data;
     } catch (error) {
+        showNotification('Error', 'Failed to fetch stock data. Please check your internet connection.');
         return null;
     }
 }
@@ -65,7 +72,6 @@ async function addStock(symbol, quantity) {
     const stockData = await fetchStockData(symbol);
 
     if (!stockData) {
-        showNotification('Error', 'Failed to fetch stock data. Please try again.');
         return;
     }
 
@@ -73,9 +79,9 @@ async function addStock(symbol, quantity) {
     const newStock = {
         symbol: symbol.toUpperCase(),
         quantity: parseInt(quantity),
-        price: parseFloat(stockData['05. price']),
-        change: parseFloat(stockData['09. change']),
-        changePercent: parseFloat(stockData['10. change percent'])
+        price: stockData.c,
+        change: stockData.d,
+        changePercent: stockData.dp
     };
 
     portfolio.push(newStock);
@@ -181,9 +187,9 @@ document.addEventListener('DOMContentLoaded', () => {
         portfolio.forEach(async (stock, index) => {
             const updatedData = await fetchStockData(stock.symbol);
             if (updatedData) {
-                portfolio[index].price = parseFloat(updatedData['05. price']);
-                portfolio[index].change = parseFloat(updatedData['09. change']);
-                portfolio[index].changePercent = parseFloat(updatedData['10. change percent']);
+                portfolio[index].price = updatedData.c;
+                portfolio[index].change = updatedData.d;
+                portfolio[index].changePercent = updatedData.dp;
             }
         });
         storage.set('portfolio', portfolio);
