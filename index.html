@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Portfolio Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="dashboard">
+    <header>
+        <h1>Stock Portfolio Tracker</h1>
+        <div class="portfolio-summary">
+            <span>Total Value: $<span id="totalValue">0.00</span></span>
+            <span>Daily Change: <span id="dailyChange">0.00%</span></span>
+        </div>
+    </header>
+
+    <main>
+        <section class="add-stock-section">
+            <h2>Add Stock</h2>
+            <div class="add-stock-form">
+                <input type="text" id="stockSymbol" placeholder="Stock Symbol (e.g., AAPL)" required>
+                <input type="number" id="stockQuantity" placeholder="Quantity" min="1" required>
+                <button id="addStockBtn" class="btn">Add to Portfolio</button>
+            </div>
+        </section>
+
+        <section class="portfolio-section">
+            <h2>Your Portfolio</h2>
+            <div class="portfolio-list" id="portfolioList">
+
+            </div>
+        </section>
+
+        <section class="chart-section">
+            <h2>Portfolio Performance</h2>
+            <div class="chart-container">
+                <canvas id="portfolioChart"></canvas>
+            </div>
+        </section>
+    </main>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
